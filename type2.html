@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Card</title>
+<style>
+body{font-family:'Segoe UI',sans-serif;padding:20px;max-width:500px;margin:auto;background:linear-gradient(135deg,#000000 0%,#8B0000 100%);color:white}
+.box{background:#1a1a1a;padding:28px;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,0.3)}
+h1{text-align:center;color:#ff4d4d;margin-top:0;font-size:24px}
+.langs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.langs button{padding:8px 14px;border:none;border-radius:20px;background:#333;cursor:pointer;font-weight:500;color:white}
+.langs button.active{background:#ff4d4d}
+.item{margin:16px 0;padding:14px;background:#2a2a2a;border-left:4px solid #ff4d4d;border-radius:8px}
+.item b{display:block;color:#ff4d4d;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.item span{font-size:18px;color:white}
+.alert{text-align:center;padding:10px;background:#ff4d4d;border-radius:8px;color:white;margin-bottom:15px;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="box">
+<div class="alert">🚨 EMERGENCY INFORMATION</div>
+<h1 id="title">Emergency Card</h1>
+
+<div class="langs">
+<button onclick="setLang('en')" class="active">English</button>
+<button onclick="setLang('hi')">हिन्दी</button>
+<button onclick="setLang('ta')">தமிழ்</button>
+<button onclick="setLang('mr')">मराठी</button>
+<button onclick="setLang('gu')">ગુજરાતી</button>
+<button onclick="setLang('bn')">বাংলা</button>
+</div>
+
+<div class="item"><b id="lName">Name</b><span id="vName">-</span></div>
+<div class="item"><b id="lBlood">Blood Group</b><span id="vBlood">-</span></div>
+<div class="item"><b id="lAllergies">Allergies / Conditions</b><span id="vAllergies">None</span></div>
+<div class="item"><b id="lContact">Emergency Contact</b><span id="vContact">-</span></div>
+<div class="item"><b>Location</b><span id="vLocation">-</span></div>
+<div class="item"><b>Nearest Hospitals</b><span id="vHospitals">Loading...</span></div>
+<div class="item"><b>Ambulance</b><span>102 / 108</span></div>
+</div>
+
+<script>
+const t={
+en:{title:"Emergency Card",name:"Name",blood:"Blood Group",allergies:"Allergies / Conditions",contact:"Emergency Contact"},
+hi:{title:"आपातकालीन कार्ड",name:"नाम",blood:"रक्त समूह",allergies:"एलर्जी / स्थिति",contact:"आपातकालीन संपर्क"},
+ta:{title:"அவசர அட்டை",name:"பெயர்",blood:"இரத்த வகை",allergies:"ஒவ்வாமை / நிலை",contact:"அவசர தொடர்பு"},
+mr:{title:"आणीबाणी कार्ड",name:"नाव",blood:"रक्तगट",allergies:"ऍलर्जी / स्थिती",contact:"आणीबाणी संपर्क"},
+gu:{title:"કટોકટી કાર્ડ",name:"નામ",blood:"રક્ત જૂથ",allergies:"એલર્જી / સ્થિતિ",contact:"કટોકટી સંપર્ક"},
+bn:{title:"জরুরী কার্ড",name:"নাম",blood:"রক্তের গ্রুপ",allergies:"এলার্জি / অবস্থা",contact:"জরুরী যোগাযোগ"}
+};
+
+let params=new URLSearchParams(window.location.search);
+document.getElementById('vName').innerText=params.get('n')||'-';
+document.getElementById('vBlood').innerText=params.get('b')||'-';
+document.getElementById('vAllergies').innerText=params.get('a')||'None';
+document.getElementById('vContact').innerText=params.get('c')||'-';
+document.getElementById('vLocation').innerText=params.get('l')||'-';
+
+// Mock hospital data (add real API if needed)
+let loc=params.get('l');
+let hospitals=loc ? `Hospital 1 near ${loc}, Hospital 2 near ${loc}` : 'Not specified';
+document.getElementById('vHospitals').innerText=hospitals;
+
+function setLang(l){
+document.querySelectorAll('.langs button').forEach(b=>b.classList.remove('active'));
+event.target.classList.add('active');
+document.getElementById('title').innerText=t[l].title;
+document.getElementById('lName').innerText=t[l].name;
+document.getElementById('lBlood').innerText=t[l].blood;
+document.getElementById('lAllergies').innerText=t[l].allergies;
+document.getElementById('lContact').innerText=t[l].contact;
+}
+</script>
+</body>
+</html>

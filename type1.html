@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Card Creator</title>
+<style>
+body{font-family:'Segoe UI',sans-serif;padding:20px;max-width:420px;margin:auto;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:white}
+.card{background:#0f3460;padding:24px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+h2{text-align:center;color:#e94560;margin-top:0}
+input,textarea{width:100%;padding:12px;margin:8px 0;border:2px solid #e0e0e0;border-radius:8px;font-size:15px;box-sizing:border-box;background:#0a1931;color:white}
+button{width:100%;padding:14px;background:#e94560;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
+button:hover{background:#ff6b81}
+#qrBox{margin-top:20px;text-align:center;display:none}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>Emergency Card Creator</h2>
+<input id="name" placeholder="Full Name">
+<input id="blood" placeholder="Blood Group">
+<textarea id="allergies" placeholder="Allergies / Conditions" rows="3"></textarea>
+<input id="contact" placeholder="Emergency Contact Number">
+<input id="location" placeholder="Location (e.g., Juhu, Mumbai)">
+<button onclick="createQR()">Make QR Code</button>
+<div id="qrBox">
+<img id="qrImg" alt="QR Code">
+</div>
+</div>
+
+<script>
+function createQR(){
+let n=document.getElementById('name').value.trim();
+let b=document.getElementById('blood').value.trim();
+let a=document.getElementById('allergies').value.trim();
+let c=document.getElementById('contact').value.trim();
+let l=document.getElementById('location').value.trim();
+
+if(!n){alert('Please enter name');return}
+
+let link=`view.html?n=${encodeURIComponent(n)}&b=${encodeURIComponent(b)}&a=${encodeURIComponent(a)}&c=${encodeURIComponent(c)}&l=${encodeURIComponent(l)}`;
+let qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(link)}`;
+document.getElementById('qrImg').src=qrUrl;
+document.getElementById('qrBox').style.display='block';
+}
+</script>
+</body>
+</html>
